@@ -1,0 +1,6 @@
+env: local
+resolvers:
+  addon:
+    app: {}
+    default: {}
+  service: {}
