@@ -18,6 +18,7 @@ class EventDispatcherMixin:
     _LOCK_ATTR: ClassVar[str] = "_event_listener_lock"
     _ORDER_ATTR: ClassVar[str] = "_event_listener_order"
     _UNSET: ClassVar[object] = object()
+    _enable_bubbling: ClassVar[bool] = False
 
     def add_event_listener(
         self,
@@ -109,6 +110,14 @@ class EventDispatcherMixin:
         for name, callback in callbacks_to_remove:
             self.remove_event_listener(name, callback)
 
+        # Bubble event to parent if enabled
+        if self._enable_bubbling:
+            parent = self._get_bubbling_parent()
+            if parent:
+                parent.dispatch(
+                    dispatched_event, payload=payload, metadata=metadata, source=source
+                )
+
         return dispatched_event
 
     async def dispatch_async(
@@ -135,6 +144,14 @@ class EventDispatcherMixin:
 
         for name, callback in callbacks_to_remove:
             self.remove_event_listener(name, callback)
+
+        # Bubble event to parent if enabled
+        if self._enable_bubbling:
+            parent = self._get_bubbling_parent()
+            if parent:
+                await parent.dispatch_async(
+                    dispatched_event, payload=payload, metadata=metadata, source=source
+                )
 
         return dispatched_event
 
@@ -212,3 +229,18 @@ class EventDispatcherMixin:
             getattr(self, self._LOCK_ATTR),
             getattr(self, self._ORDER_ATTR),
         )
+
+    def _get_bubbling_parent(self) -> "EventDispatcherMixin | None":
+        """Override this method to return the parent dispatcher for event bubbling.
+
+        Returns:
+            The parent dispatcher to bubble events to, or None if no parent exists.
+
+        Example:
+            class FileNode(EventDispatcherMixin):
+                _enable_bubbling = True
+
+                def _get_bubbling_parent(self):
+                    return self.parent  # or self.owner, self.container, etc.
+        """
+        return None
