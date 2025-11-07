@@ -1,3 +1,11 @@
 global:
   name: event
   version: 0.0.74
+test:
+  coverage:
+    last_report:
+      covered: 202
+      excluded: 2
+      missing: 1
+      percent: 99.50738916256158
+      total: 203
