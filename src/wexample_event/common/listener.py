@@ -1,17 +1,12 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Any, Callable, Iterable, List, Sequence
+from typing import Any, Callable, Iterable, Sequence
 
-from .dispatcher import EventCallback, EventDispatcherMixin
+from .dispatcher import EventDispatcherMixin
+from .listener_record import EventCallback
+from .listener_spec import ListenerSpec
+from .listener_state import ListenerState
 from .priority import DEFAULT_PRIORITY, EventPriority
-
-
-@dataclass(frozen=True, slots=True)
-class _ListenerSpec:
-    name: str
-    priority: int
-    once: bool
 
 
 class EventListenerMixin:
@@ -32,7 +27,7 @@ class EventListenerMixin:
 
         def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
             specs = list(getattr(func, cls._LISTENER_MARK_ATTR, ()))
-            specs.append(_ListenerSpec(name=event_name, priority=int(priority), once=once))
+            specs.append(ListenerSpec(name=event_name, priority=int(priority), once=once))
             setattr(func, cls._LISTENER_MARK_ATTR, tuple(specs))
             return func
 
@@ -85,24 +80,16 @@ class EventListenerMixin:
         state = self._ensure_listener_state()
         return state.dispatcher
 
-    def _iter_declared_listener_specs(self) -> Iterable[tuple[str, Sequence[_ListenerSpec]]]:
+    def _iter_declared_listener_specs(self) -> Iterable[tuple[str, Sequence[ListenerSpec]]]:
         for cls in type(self).__mro__:
             for attr_name, value in cls.__dict__.items():
                 specs = getattr(value, self._LISTENER_MARK_ATTR, None)
                 if specs:
                     yield attr_name, specs
 
-    class _ListenerState:
-        dispatcher: EventDispatcherMixin | None
-        bindings: List[tuple[str, EventCallback]]
-
-        def __init__(self) -> None:
-            self.dispatcher = None
-            self.bindings = []
-
-    def _ensure_listener_state(self) -> "EventListenerMixin._ListenerState":
+    def _ensure_listener_state(self) -> ListenerState:
         state = getattr(self, self._BOUND_STATE_ATTR, None)
         if state is None:
-            state = self._ListenerState()
+            state = ListenerState()
             setattr(self, self._BOUND_STATE_ATTR, state)
         return state

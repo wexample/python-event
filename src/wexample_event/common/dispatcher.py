@@ -2,23 +2,13 @@ from __future__ import annotations
 
 import inspect
 import threading
-from collections.abc import Awaitable, Callable, Mapping
-from dataclasses import dataclass
+from collections.abc import Mapping
 from itertools import count
 from typing import Any, ClassVar, List, Tuple
 
 from .event import Event
+from .listener_record import EventCallback, ListenerRecord
 from .priority import DEFAULT_PRIORITY, EventPriority
-
-EventCallback = Callable[[Event], Awaitable[None] | None]
-
-
-@dataclass(slots=True)
-class _ListenerRecord:
-    callback: EventCallback
-    once: bool
-    priority: int
-    order: int
 
 
 class EventDispatcherMixin:
@@ -42,7 +32,7 @@ class EventDispatcherMixin:
             raise TypeError("callback must be callable")
 
         listeners, lock, order_seq = self._ensure_dispatcher_state()
-        record = _ListenerRecord(
+        record = ListenerRecord(
             callback=callback,
             once=once,
             priority=int(priority),
@@ -173,7 +163,7 @@ class EventDispatcherMixin:
         payload: Mapping[str, Any] | None,
         metadata: Mapping[str, Any] | None,
         source: Any | object,
-    ) -> tuple[Event, list[tuple[str, _ListenerRecord]]]:
+    ) -> tuple[Event, list[tuple[str, ListenerRecord]]]:
         listeners, lock, _ = self._ensure_dispatcher_state()
         dispatched_event = self._coerce_event(event, payload=payload, metadata=metadata, source=source)
 
@@ -200,7 +190,7 @@ class EventDispatcherMixin:
 
     def _ensure_dispatcher_state(
         self,
-    ) -> tuple[dict[str, list[_ListenerRecord]], threading.RLock, count]:
+    ) -> tuple[dict[str, list[ListenerRecord]], threading.RLock, count]:
         if not hasattr(self, self._LISTENERS_ATTR):
             setattr(self, self._LISTENERS_ATTR, {})
             setattr(self, self._LOCK_ATTR, threading.RLock())
