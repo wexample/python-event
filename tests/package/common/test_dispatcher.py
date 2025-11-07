@@ -9,7 +9,8 @@ from wexample_helpers.testing.abstract_test_helpers import AbstractTestHelpers
 class TestEventDispatcherMixin(AbstractTestHelpers):
     def test_dispatcher_basic_dispatch(self) -> None:
         """Test basic event dispatching."""
-        from wexample_event import Event, EventDispatcherMixin
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -29,7 +30,8 @@ class TestEventDispatcherMixin(AbstractTestHelpers):
 
     def test_dispatcher_with_payload(self) -> None:
         """Test dispatching with payload."""
-        from wexample_event import Event, EventDispatcherMixin
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -48,7 +50,8 @@ class TestEventDispatcherMixin(AbstractTestHelpers):
 
     def test_dispatcher_multiple_listeners(self) -> None:
         """Test multiple listeners for the same event."""
-        from wexample_event import Event, EventDispatcherMixin
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -72,7 +75,9 @@ class TestEventDispatcherMixin(AbstractTestHelpers):
 
     def test_dispatcher_priority_ordering(self) -> None:
         """Test that listeners are called in priority order."""
-        from wexample_event import Event, EventDispatcherMixin, EventPriority
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
+        from wexample_event.common.priority import EventPriority
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -102,7 +107,8 @@ class TestEventDispatcherMixin(AbstractTestHelpers):
 
     def test_dispatcher_remove_listener(self) -> None:
         """Test removing an event listener."""
-        from wexample_event import Event, EventDispatcherMixin
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -125,7 +131,9 @@ class TestEventDispatcherMixin(AbstractTestHelpers):
 
     def test_dispatcher_remove_nonexistent_listener(self) -> None:
         """Test removing a listener that doesn't exist."""
-        from wexample_event import Event, EventDispatcherMixin
+
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -140,7 +148,9 @@ class TestEventDispatcherMixin(AbstractTestHelpers):
 
     def test_dispatcher_once_listener(self) -> None:
         """Test once=True listener is called only once."""
-        from wexample_event import Event, EventDispatcherMixin
+
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -161,7 +171,9 @@ class TestEventDispatcherMixin(AbstractTestHelpers):
 
     def test_dispatcher_clear_listeners(self) -> None:
         """Test clearing all listeners."""
-        from wexample_event import Event, EventDispatcherMixin
+
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -184,7 +196,9 @@ class TestEventDispatcherMixin(AbstractTestHelpers):
 
     def test_dispatcher_clear_specific_event(self) -> None:
         """Test clearing listeners for a specific event."""
-        from wexample_event import Event, EventDispatcherMixin
+
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -208,7 +222,9 @@ class TestEventDispatcherMixin(AbstractTestHelpers):
 
     def test_dispatcher_has_listeners(self) -> None:
         """Test has_event_listeners method."""
-        from wexample_event import Event, EventDispatcherMixin
+
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -228,7 +244,9 @@ class TestEventDispatcherMixin(AbstractTestHelpers):
 
     def test_dispatcher_with_event_object(self) -> None:
         """Test dispatching with an Event object."""
-        from wexample_event import Event, EventDispatcherMixin
+
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -250,7 +268,9 @@ class TestEventDispatcherMixin(AbstractTestHelpers):
 
     def test_dispatcher_event_with_metadata(self) -> None:
         """Test dispatching with metadata."""
-        from wexample_event import Event, EventDispatcherMixin
+
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -269,7 +289,9 @@ class TestEventDispatcherMixin(AbstractTestHelpers):
 
     def test_dispatcher_event_with_source(self) -> None:
         """Test dispatching with custom source."""
-        from wexample_event import Event, EventDispatcherMixin
+
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -290,7 +312,9 @@ class TestEventDispatcherMixin(AbstractTestHelpers):
 
     def test_dispatcher_default_source_is_dispatcher(self) -> None:
         """Test that default source is the dispatcher itself."""
-        from wexample_event import Event, EventDispatcherMixin
+
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -309,7 +333,8 @@ class TestEventDispatcherMixin(AbstractTestHelpers):
 
     def test_dispatcher_invalid_callback(self) -> None:
         """Test that non-callable raises TypeError."""
-        from wexample_event import EventDispatcherMixin
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -321,7 +346,9 @@ class TestEventDispatcherMixin(AbstractTestHelpers):
 
     def test_dispatcher_event_alias(self) -> None:
         """Test dispatch_event alias."""
-        from wexample_event import Event, EventDispatcherMixin
+
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -339,7 +366,9 @@ class TestEventDispatcherMixin(AbstractTestHelpers):
 
     def test_dispatcher_async(self) -> None:
         """Test async event dispatching."""
-        from wexample_event import Event, EventDispatcherMixin
+
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -368,7 +397,9 @@ class TestEventDispatcherMixin(AbstractTestHelpers):
 
     def test_dispatcher_async_once(self) -> None:
         """Test async dispatch with once=True."""
-        from wexample_event import Event, EventDispatcherMixin
+
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -391,7 +422,9 @@ class TestEventDispatcherMixin(AbstractTestHelpers):
 
     def test_dispatcher_sync_with_async_listener_raises(self) -> None:
         """Test that sync dispatch with async listener raises error."""
-        from wexample_event import Event, EventDispatcherMixin
+
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -408,7 +441,9 @@ class TestEventDispatcherMixin(AbstractTestHelpers):
 
     def test_dispatcher_event_alias_async(self) -> None:
         """Test dispatch_event_async alias."""
-        from wexample_event import Event, EventDispatcherMixin
+
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -432,7 +467,9 @@ class TestEventDispatcherMixin(AbstractTestHelpers):
         """Test that dispatcher is thread-safe."""
         import threading
 
-        from wexample_event import Event, EventDispatcherMixin
+
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -459,7 +496,7 @@ class TestEventDispatcherMixin(AbstractTestHelpers):
 
     def test_types(self) -> None:
         """Test type validation for EventDispatcherMixin."""
-        from wexample_event import EventDispatcherMixin
+        from wexample_event.common.dispatcher import EventDispatcherMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass

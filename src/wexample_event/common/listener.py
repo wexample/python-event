@@ -2,11 +2,11 @@ from __future__ import annotations
 
 from typing import Any, Callable, Iterable, Sequence
 
-from .dataclass.listener_record import EventCallback
-from .dataclass.listener_spec import ListenerSpec
-from .dispatcher import EventDispatcherMixin
-from .listener_state import ListenerState
-from .priority import DEFAULT_PRIORITY, EventPriority
+from wexample_event.dataclass.listener_record import EventCallback
+from wexample_event.dataclass.listener_spec import ListenerSpec
+from wexample_event.common.dispatcher import EventDispatcherMixin
+from wexample_event.common.listener_state import ListenerState
+from wexample_event.common.priority import DEFAULT_PRIORITY, EventPriority
 
 
 class EventListenerMixin:

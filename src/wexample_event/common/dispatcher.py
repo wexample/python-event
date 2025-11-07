@@ -6,9 +6,9 @@ from collections.abc import Mapping
 from itertools import count
 from typing import Any, ClassVar, List, Tuple
 
-from .dataclass.event import Event
-from .dataclass.listener_record import EventCallback, ListenerRecord
-from .priority import DEFAULT_PRIORITY, EventPriority
+from wexample_event.dataclass.event import Event
+from wexample_event.dataclass.listener_record import EventCallback, ListenerRecord
+from wexample_event.common.priority import DEFAULT_PRIORITY, EventPriority
 
 
 class EventDispatcherMixin:

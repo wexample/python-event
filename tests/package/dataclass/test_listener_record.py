@@ -6,7 +6,8 @@ from wexample_helpers.testing.abstract_test_helpers import AbstractTestHelpers
 class TestListenerRecord(AbstractTestHelpers):
     def test_listener_record_creation(self) -> None:
         """Test creating a ListenerRecord."""
-        from wexample_event import Event, ListenerRecord
+        from wexample_event.dataclass.event import Event
+        from wexample_event.dataclass.listener_record import ListenerRecord
 
         def callback(event: Event) -> None:
             pass
@@ -20,7 +21,8 @@ class TestListenerRecord(AbstractTestHelpers):
 
     def test_listener_record_with_once(self) -> None:
         """Test ListenerRecord with once=True."""
-        from wexample_event import Event, ListenerRecord
+        from wexample_event.dataclass.event import Event
+        from wexample_event.dataclass.listener_record import ListenerRecord
 
         def callback(event: Event) -> None:
             pass
@@ -33,7 +35,8 @@ class TestListenerRecord(AbstractTestHelpers):
 
     def test_listener_record_async_callback(self) -> None:
         """Test ListenerRecord with async callback."""
-        from wexample_event import Event, ListenerRecord
+        from wexample_event.dataclass.event import Event
+        from wexample_event.dataclass.listener_record import ListenerRecord
 
         async def async_callback(event: Event) -> None:
             pass
@@ -46,7 +49,8 @@ class TestListenerRecord(AbstractTestHelpers):
 
     def test_listener_record_mutable(self) -> None:
         """Test that ListenerRecord is mutable (not frozen)."""
-        from wexample_event import Event, ListenerRecord
+        from wexample_event.dataclass.event import Event
+        from wexample_event.dataclass.listener_record import ListenerRecord
 
         def callback(event: Event) -> None:
             pass
@@ -59,7 +63,8 @@ class TestListenerRecord(AbstractTestHelpers):
 
     def test_types(self) -> None:
         """Test type validation for ListenerRecord."""
-        from wexample_event import Event, ListenerRecord
+        from wexample_event.dataclass.event import Event
+        from wexample_event.dataclass.listener_record import ListenerRecord
 
         def callback(event: Event) -> None:
             pass

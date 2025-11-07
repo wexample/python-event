@@ -7,7 +7,8 @@ from wexample_helpers.testing.abstract_test_helpers import AbstractTestHelpers
 class TestEventListenerMixin(AbstractTestHelpers):
     def test_listener_decorator(self) -> None:
         """Test @on decorator marks methods as listeners."""
-        from wexample_event import Event, EventDispatcherMixin, EventListenerMixin
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.listener import EventListenerMixin
 
         class TestListener(EventListenerMixin):
             def __init__(self) -> None:
@@ -22,7 +23,9 @@ class TestEventListenerMixin(AbstractTestHelpers):
 
     def test_listener_bind_to_dispatcher(self) -> None:
         """Test binding listener to dispatcher."""
-        from wexample_event import Event, EventDispatcherMixin, EventListenerMixin
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
+        from wexample_event.common.listener import EventListenerMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -46,7 +49,9 @@ class TestEventListenerMixin(AbstractTestHelpers):
 
     def test_listener_multiple_events(self) -> None:
         """Test listener handling multiple event types."""
-        from wexample_event import Event, EventDispatcherMixin, EventListenerMixin
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
+        from wexample_event.common.listener import EventListenerMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -77,7 +82,9 @@ class TestEventListenerMixin(AbstractTestHelpers):
 
     def test_listener_with_priority(self) -> None:
         """Test listener with custom priority."""
-        from wexample_event import Event, EventDispatcherMixin, EventListenerMixin, EventPriority
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
+        from wexample_event.common.listener import EventListenerMixin, EventPriority
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -104,7 +111,9 @@ class TestEventListenerMixin(AbstractTestHelpers):
 
     def test_listener_once(self) -> None:
         """Test listener with once=True."""
-        from wexample_event import Event, EventDispatcherMixin, EventListenerMixin
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
+        from wexample_event.common.listener import EventListenerMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -128,7 +137,9 @@ class TestEventListenerMixin(AbstractTestHelpers):
 
     def test_listener_unbind(self) -> None:
         """Test unbinding listener from dispatcher."""
-        from wexample_event import Event, EventDispatcherMixin, EventListenerMixin
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
+        from wexample_event.common.listener import EventListenerMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -154,7 +165,9 @@ class TestEventListenerMixin(AbstractTestHelpers):
 
     def test_listener_get_bound_dispatcher(self) -> None:
         """Test getting the bound dispatcher."""
-        from wexample_event import Event, EventDispatcherMixin, EventListenerMixin
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
+        from wexample_event.common.listener import EventListenerMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -177,7 +190,9 @@ class TestEventListenerMixin(AbstractTestHelpers):
 
     def test_listener_rebind_to_different_dispatcher(self) -> None:
         """Test rebinding listener to a different dispatcher."""
-        from wexample_event import Event, EventDispatcherMixin, EventListenerMixin
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
+        from wexample_event.common.listener import EventListenerMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -207,7 +222,9 @@ class TestEventListenerMixin(AbstractTestHelpers):
 
     def test_listener_bind_same_dispatcher_twice(self) -> None:
         """Test binding to the same dispatcher twice does nothing."""
-        from wexample_event import Event, EventDispatcherMixin, EventListenerMixin
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
+        from wexample_event.common.listener import EventListenerMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -231,7 +248,8 @@ class TestEventListenerMixin(AbstractTestHelpers):
 
     def test_listener_bind_none_raises(self) -> None:
         """Test that binding to None raises ValueError."""
-        from wexample_event import Event, EventListenerMixin
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.listener import EventListenerMixin
 
         class TestListener(EventListenerMixin):
             @EventListenerMixin.on("test")
@@ -245,7 +263,9 @@ class TestEventListenerMixin(AbstractTestHelpers):
 
     def test_listener_multiple_decorators_same_method(self) -> None:
         """Test multiple @on decorators on the same method."""
-        from wexample_event import Event, EventDispatcherMixin, EventListenerMixin
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
+        from wexample_event.common.listener import EventListenerMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -270,7 +290,9 @@ class TestEventListenerMixin(AbstractTestHelpers):
 
     def test_listener_inheritance(self) -> None:
         """Test that listener methods are inherited."""
-        from wexample_event import Event, EventDispatcherMixin, EventListenerMixin
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
+        from wexample_event.common.listener import EventListenerMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -304,7 +326,9 @@ class TestEventListenerMixin(AbstractTestHelpers):
 
     def test_listener_with_payload(self) -> None:
         """Test listener receiving event with payload."""
-        from wexample_event import Event, EventDispatcherMixin, EventListenerMixin
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
+        from wexample_event.common.listener import EventListenerMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -327,7 +351,9 @@ class TestEventListenerMixin(AbstractTestHelpers):
 
     def test_listener_multiple_instances(self) -> None:
         """Test multiple listener instances work independently."""
-        from wexample_event import Event, EventDispatcherMixin, EventListenerMixin
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.dispatcher import EventDispatcherMixin
+        from wexample_event.common.listener import EventListenerMixin
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -354,7 +380,8 @@ class TestEventListenerMixin(AbstractTestHelpers):
 
     def test_listener_unbind_without_bind(self) -> None:
         """Test that unbinding without binding doesn't raise error."""
-        from wexample_event import Event, EventListenerMixin
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.listener import EventListenerMixin
 
         class TestListener(EventListenerMixin):
             @EventListenerMixin.on("test")
@@ -366,7 +393,8 @@ class TestEventListenerMixin(AbstractTestHelpers):
 
     def test_types(self) -> None:
         """Test type validation for EventListenerMixin."""
-        from wexample_event import Event, EventListenerMixin
+        from wexample_event.dataclass.event import Event
+        from wexample_event.common.listener import EventListenerMixin
 
         class TestListener(EventListenerMixin):
             @EventListenerMixin.on("test")

@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, List
 
 if TYPE_CHECKING:
-    from .dataclass.listener_record import EventCallback
+    from wexample_event.dataclass.listener_record import EventCallback
 
 
 class ListenerState:

@@ -6,7 +6,7 @@ from wexample_helpers.testing.abstract_test_helpers import AbstractTestHelpers
 class TestEventPriority(AbstractTestHelpers):
     def test_priority_values(self) -> None:
         """Test EventPriority enum values."""
-        from wexample_event import EventPriority
+        from wexample_event.common.priority import EventPriority
 
         assert EventPriority.LOW == -100
         assert EventPriority.NORMAL == 0
@@ -14,7 +14,7 @@ class TestEventPriority(AbstractTestHelpers):
 
     def test_priority_comparison(self) -> None:
         """Test that priorities can be compared."""
-        from wexample_event import EventPriority
+        from wexample_event.common.priority import EventPriority
 
         assert EventPriority.LOW < EventPriority.NORMAL
         assert EventPriority.NORMAL < EventPriority.HIGH
@@ -22,7 +22,7 @@ class TestEventPriority(AbstractTestHelpers):
 
     def test_priority_as_int(self) -> None:
         """Test that priorities can be used as integers."""
-        from wexample_event import EventPriority
+        from wexample_event.common.priority import EventPriority
 
         assert int(EventPriority.LOW) == -100
         assert int(EventPriority.NORMAL) == 0
@@ -30,14 +30,14 @@ class TestEventPriority(AbstractTestHelpers):
 
     def test_default_priority(self) -> None:
         """Test DEFAULT_PRIORITY constant."""
-        from wexample_event import DEFAULT_PRIORITY, EventPriority
+        from wexample_event.common.priority import DEFAULT_PRIORITY, EventPriority
 
         assert DEFAULT_PRIORITY == EventPriority.NORMAL
         assert DEFAULT_PRIORITY == 0
 
     def test_priority_arithmetic(self) -> None:
         """Test arithmetic operations with priorities."""
-        from wexample_event import EventPriority
+        from wexample_event.common.priority import EventPriority
 
         result = EventPriority.NORMAL + 50
         assert result == 50
@@ -47,7 +47,7 @@ class TestEventPriority(AbstractTestHelpers):
 
     def test_priority_ordering(self) -> None:
         """Test that priorities maintain correct ordering."""
-        from wexample_event import EventPriority
+        from wexample_event.common.priority import EventPriority
 
         priorities = [EventPriority.HIGH, EventPriority.LOW, EventPriority.NORMAL]
         sorted_priorities = sorted(priorities)
@@ -60,7 +60,7 @@ class TestEventPriority(AbstractTestHelpers):
 
     def test_priority_in_dict(self) -> None:
         """Test using priorities as dictionary keys."""
-        from wexample_event import EventPriority
+        from wexample_event.common.priority import EventPriority
 
         priority_map = {
             EventPriority.LOW: "low",
@@ -74,7 +74,7 @@ class TestEventPriority(AbstractTestHelpers):
 
     def test_types(self) -> None:
         """Test type validation for EventPriority."""
-        from wexample_event import DEFAULT_PRIORITY, EventPriority
+        from wexample_event.common.priority import DEFAULT_PRIORITY, EventPriority
 
         self._test_type_validate_or_fail(
             success_cases=[
