@@ -10,6 +10,7 @@ class Event:
     """Immutable event payload shared between dispatchers and listeners."""
 
     name: str
+    
     payload: Mapping[str, Any] | None = None
     metadata: Mapping[str, Any] | None = None
     source: Any | None = None

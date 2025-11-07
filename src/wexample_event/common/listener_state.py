@@ -7,8 +7,8 @@ if TYPE_CHECKING:
 
 
 class ListenerState:
-    dispatcher: "EventDispatcherMixin | None"  # type: ignore[name-defined]
-    bindings: List[tuple[str, "EventCallback"]]
+    dispatcher: EventDispatcherMixin | None  # type: ignore[name-defined]
+    bindings: list[tuple[str, EventCallback]]
 
     def __init__(self) -> None:
         self.dispatcher = None

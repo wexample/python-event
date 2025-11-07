@@ -27,7 +27,9 @@ class EventListenerMixin:
 
         def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
             specs = list(getattr(func, cls._LISTENER_MARK_ATTR, ()))
-            specs.append(ListenerSpec(name=event_name, priority=int(priority), once=once))
+            specs.append(
+                ListenerSpec(name=event_name, priority=int(priority), once=once)
+            )
             setattr(func, cls._LISTENER_MARK_ATTR, tuple(specs))
             return func
 
@@ -80,7 +82,9 @@ class EventListenerMixin:
         state = self._ensure_listener_state()
         return state.dispatcher
 
-    def _iter_declared_listener_specs(self) -> Iterable[tuple[str, Sequence[ListenerSpec]]]:
+    def _iter_declared_listener_specs(
+        self,
+    ) -> Iterable[tuple[str, Sequence[ListenerSpec]]]:
         for cls in type(self).__mro__:
             for attr_name, value in cls.__dict__.items():
                 specs = getattr(value, self._LISTENER_MARK_ATTR, None)

@@ -4,34 +4,11 @@ from wexample_helpers.testing.abstract_test_helpers import AbstractTestHelpers
 
 
 class TestListenerState(AbstractTestHelpers):
-    def test_listener_state_creation(self) -> None:
-        """Test creating a ListenerState."""
-        from wexample_event.common.listener_state import ListenerState
-
-        state = ListenerState()
-
-        assert state.dispatcher is None
-        assert state.bindings == []
-
-    def test_listener_state_set_dispatcher(self) -> None:
-        """Test setting dispatcher on ListenerState."""
-        from wexample_event.common.listener_state import ListenerState
-        from wexample_event.common.dispatcher import EventDispatcherMixin
-
-        class TestDispatcher(EventDispatcherMixin):
-            pass
-
-        state = ListenerState()
-        dispatcher = TestDispatcher()
-
-        state.dispatcher = dispatcher
-        assert state.dispatcher is dispatcher
 
     def test_listener_state_add_bindings(self) -> None:
         """Test adding bindings to ListenerState."""
         from wexample_event.dataclass.event import Event
         from wexample_event.common.listener_state import ListenerState
-        from wexample_event.common.dispatcher import EventDispatcherMixin
 
         def callback(event: Event) -> None:
             pass
@@ -57,6 +34,14 @@ class TestListenerState(AbstractTestHelpers):
 
         state.bindings = []
         assert len(state.bindings) == 0
+    def test_listener_state_creation(self) -> None:
+        """Test creating a ListenerState."""
+        from wexample_event.common.listener_state import ListenerState
+
+        state = ListenerState()
+
+        assert state.dispatcher is None
+        assert state.bindings == []
 
     def test_listener_state_mutable(self) -> None:
         """Test that ListenerState is mutable."""
@@ -75,6 +60,20 @@ class TestListenerState(AbstractTestHelpers):
 
         state.dispatcher = dispatcher2
         assert state.dispatcher is dispatcher2
+
+    def test_listener_state_set_dispatcher(self) -> None:
+        """Test setting dispatcher on ListenerState."""
+        from wexample_event.common.listener_state import ListenerState
+        from wexample_event.common.dispatcher import EventDispatcherMixin
+
+        class TestDispatcher(EventDispatcherMixin):
+            pass
+
+        state = ListenerState()
+        dispatcher = TestDispatcher()
+
+        state.dispatcher = dispatcher
+        assert state.dispatcher is dispatcher
 
     def test_types(self) -> None:
         """Test type validation for ListenerState."""

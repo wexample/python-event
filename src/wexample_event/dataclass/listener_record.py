@@ -12,5 +12,5 @@ EventCallback = Callable[[Event], Awaitable[None] | None]
 class ListenerRecord:
     callback: EventCallback
     once: bool
-    priority: int
     order: int
+    priority: int

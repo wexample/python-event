@@ -79,9 +79,7 @@ class TestEvent(AbstractTestHelpers):
         from wexample_event.dataclass.event import Event
 
         original = Event(name="test", payload={"a": 1})
-        updated = original.with_update(
-            payload={"b": 2}, metadata={"meta": "data"}
-        )
+        updated = original.with_update(payload={"b": 2}, metadata={"meta": "data"})
 
         assert original.payload == {"a": 1}
         assert original.metadata is None

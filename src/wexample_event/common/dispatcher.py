@@ -91,7 +91,9 @@ class EventDispatcherMixin:
         source: Any | object = _UNSET,
     ) -> Event:
         """Synchronously dispatch an event to all registered listeners."""
-        listeners = self._snapshot_listeners(event, payload=payload, metadata=metadata, source=source)
+        listeners = self._snapshot_listeners(
+            event, payload=payload, metadata=metadata, source=source
+        )
         dispatched_event, records = listeners
 
         callbacks_to_remove: List[Tuple[str, EventCallback]] = []
@@ -118,7 +120,9 @@ class EventDispatcherMixin:
         source: Any | object = _UNSET,
     ) -> Event:
         """Asynchronously dispatch an event, awaiting coroutine listeners."""
-        listeners = self._snapshot_listeners(event, payload=payload, metadata=metadata, source=source)
+        listeners = self._snapshot_listeners(
+            event, payload=payload, metadata=metadata, source=source
+        )
         dispatched_event, records = listeners
 
         callbacks_to_remove: List[Tuple[str, EventCallback]] = []
@@ -154,7 +158,9 @@ class EventDispatcherMixin:
         source: Any | object = _UNSET,
     ) -> Event:
         """Alias for dispatch_async for readability."""
-        return await self.dispatch_async(event, payload=payload, metadata=metadata, source=source)
+        return await self.dispatch_async(
+            event, payload=payload, metadata=metadata, source=source
+        )
 
     def _snapshot_listeners(
         self,
@@ -165,7 +171,9 @@ class EventDispatcherMixin:
         source: Any | object,
     ) -> tuple[Event, list[tuple[str, ListenerRecord]]]:
         listeners, lock, _ = self._ensure_dispatcher_state()
-        dispatched_event = self._coerce_event(event, payload=payload, metadata=metadata, source=source)
+        dispatched_event = self._coerce_event(
+            event, payload=payload, metadata=metadata, source=source
+        )
 
         with lock:
             bucket = listeners.get(dispatched_event.name, [])
@@ -182,11 +190,15 @@ class EventDispatcherMixin:
     ) -> Event:
         if isinstance(event, Event):
             if payload is not None or metadata is not None or source is not self._UNSET:
-                raise ValueError("Event instance cannot be combined with payload/metadata/source overrides")
+                raise ValueError(
+                    "Event instance cannot be combined with payload/metadata/source overrides"
+                )
             return event
 
         resolved_source = self if source is self._UNSET else source
-        return Event(name=event, payload=payload, metadata=metadata, source=resolved_source)
+        return Event(
+            name=event, payload=payload, metadata=metadata, source=resolved_source
+        )
 
     def _ensure_dispatcher_state(
         self,

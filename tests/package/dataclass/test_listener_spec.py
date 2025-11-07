@@ -16,14 +16,14 @@ class TestListenerSpec(AbstractTestHelpers):
         assert spec.priority == 100
         assert spec.once is False
 
-    def test_listener_spec_with_once(self) -> None:
-        """Test ListenerSpec with once=True."""
+    def test_listener_spec_equality(self) -> None:
+        """Test ListenerSpec equality."""
         from wexample_event.dataclass.listener_spec import ListenerSpec
 
-        spec = ListenerSpec(name="once_event", priority=0, once=True)
+        spec1 = ListenerSpec(name="test", priority=100, once=False)
+        spec2 = ListenerSpec(name="test", priority=100, once=False)
 
-        assert spec.name == "once_event"
-        assert spec.once is True
+        assert spec1 == spec2
 
     def test_listener_spec_immutable(self) -> None:
         """Test that ListenerSpec is immutable (frozen)."""
@@ -33,15 +33,6 @@ class TestListenerSpec(AbstractTestHelpers):
 
         with pytest.raises(Exception):  # FrozenInstanceError
             spec.name = "modified"  # type: ignore
-
-    def test_listener_spec_equality(self) -> None:
-        """Test ListenerSpec equality."""
-        from wexample_event.dataclass.listener_spec import ListenerSpec
-
-        spec1 = ListenerSpec(name="test", priority=100, once=False)
-        spec2 = ListenerSpec(name="test", priority=100, once=False)
-
-        assert spec1 == spec2
 
     def test_listener_spec_inequality(self) -> None:
         """Test ListenerSpec inequality."""
@@ -59,6 +50,15 @@ class TestListenerSpec(AbstractTestHelpers):
         spec = ListenerSpec(name="test", priority=-100, once=False)
 
         assert spec.priority == -100
+
+    def test_listener_spec_with_once(self) -> None:
+        """Test ListenerSpec with once=True."""
+        from wexample_event.dataclass.listener_spec import ListenerSpec
+
+        spec = ListenerSpec(name="once_event", priority=0, once=True)
+
+        assert spec.name == "once_event"
+        assert spec.once is True
 
     def test_types(self) -> None:
         """Test type validation for ListenerSpec."""
