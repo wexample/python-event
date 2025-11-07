@@ -8,7 +8,9 @@ version = "0.0.74"
 authors = [{name = "weeger", email = "contact@wexample.com"}]
 requires-python = ">=3.10"
 classifiers = ["Programming Language :: Python :: 3", "License :: OSI Approved :: MIT License", "Operating System :: OS Independent"]
-dependencies = []
+dependencies = [
+    "wexample-helpers==0.0.78",
+]
 
 [project.readme]
 file = "README.md"
