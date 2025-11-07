@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 
+import pytest
 from wexample_helpers.testing.abstract_test_helpers import AbstractTestHelpers
 
 
@@ -315,7 +316,7 @@ class TestEventDispatcherMixin(AbstractTestHelpers):
 
         dispatcher = TestDispatcher()
 
-        with self.assertRaises(TypeError):
+        with pytest.raises(TypeError):
             dispatcher.add_event_listener("test", "not_callable")  # type: ignore
 
     def test_dispatcher_event_alias(self) -> None:
@@ -402,7 +403,7 @@ class TestEventDispatcherMixin(AbstractTestHelpers):
 
         dispatcher.add_event_listener("test", async_listener)
 
-        with self.assertRaises(RuntimeError):
+        with pytest.raises(RuntimeError):
             dispatcher.dispatch("test")
 
     def test_dispatcher_event_alias_async(self) -> None:

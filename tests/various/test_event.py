@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
+import pytest
 from wexample_helpers.testing.abstract_test_helpers import AbstractTestHelpers
 
 
@@ -58,7 +59,7 @@ class TestEvent(AbstractTestHelpers):
         event = Event(name="test_event")
 
         # Attempting to modify should raise an error
-        with self.assertRaises(Exception):  # FrozenInstanceError
+        with pytest.raises(Exception):  # FrozenInstanceError
             event.name = "modified_name"  # type: ignore
 
     def test_event_with_update(self) -> None:

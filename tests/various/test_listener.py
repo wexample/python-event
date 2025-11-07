@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import pytest
 from wexample_helpers.testing.abstract_test_helpers import AbstractTestHelpers
 
 
@@ -17,7 +18,7 @@ class TestEventListenerMixin(AbstractTestHelpers):
                 self.events_received.append(event)
 
         listener = TestListener()
-        assert hasattr(listener.handle_test, "_EventListenerMixin__event_listener_specs__")
+        assert hasattr(listener.handle_test, "__event_listener_specs__")
 
     def test_listener_bind_to_dispatcher(self) -> None:
         """Test binding listener to dispatcher."""
@@ -239,7 +240,7 @@ class TestEventListenerMixin(AbstractTestHelpers):
 
         listener = TestListener()
 
-        with self.assertRaises(ValueError):
+        with pytest.raises(ValueError):
             listener.bind_to_dispatcher(None)  # type: ignore
 
     def test_listener_multiple_decorators_same_method(self) -> None:
