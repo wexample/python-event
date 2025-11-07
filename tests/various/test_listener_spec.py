@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import pytest
 from wexample_helpers.testing.abstract_test_helpers import AbstractTestHelpers
 
 
@@ -29,7 +30,7 @@ class TestListenerSpec(AbstractTestHelpers):
 
         spec = ListenerSpec(name="test", priority=0, once=False)
 
-        with self.assertRaises(Exception):  # FrozenInstanceError
+        with pytest.raises(Exception):  # FrozenInstanceError
             spec.name = "modified"  # type: ignore
 
     def test_listener_spec_equality(self) -> None:
