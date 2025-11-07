@@ -114,9 +114,7 @@ class EventDispatcherMixin:
         if self._enable_bubbling:
             parent = self._get_bubbling_parent()
             if parent:
-                parent.dispatch(
-                    dispatched_event, payload=payload, metadata=metadata, source=source
-                )
+                parent.dispatch(dispatched_event)
 
         return dispatched_event
 
@@ -149,9 +147,7 @@ class EventDispatcherMixin:
         if self._enable_bubbling:
             parent = self._get_bubbling_parent()
             if parent:
-                await parent.dispatch_async(
-                    dispatched_event, payload=payload, metadata=metadata, source=source
-                )
+                await parent.dispatch_async(dispatched_event)
 
         return dispatched_event
 
