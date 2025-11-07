@@ -1,10 +1,8 @@
 from __future__ import annotations
 
+from .dataclass import Event, EventCallback, ListenerRecord, ListenerSpec
 from .dispatcher import EventDispatcherMixin
-from .event import Event
 from .listener import EventListenerMixin
-from .listener_record import EventCallback, ListenerRecord
-from .listener_spec import ListenerSpec
 from .listener_state import ListenerState
 from .priority import DEFAULT_PRIORITY, EventPriority
 
