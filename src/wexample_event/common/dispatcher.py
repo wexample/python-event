@@ -6,8 +6,8 @@ from collections.abc import Mapping
 from itertools import count
 from typing import Any, ClassVar, List, Tuple
 
-from .event import Event
-from .listener_record import EventCallback, ListenerRecord
+from .dataclass.event import Event
+from .dataclass.listener_record import EventCallback, ListenerRecord
 from .priority import DEFAULT_PRIORITY, EventPriority
 
 

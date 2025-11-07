@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from typing import Any, Callable, Iterable, Sequence
 
+from .dataclass.listener_record import EventCallback
+from .dataclass.listener_spec import ListenerSpec
 from .dispatcher import EventDispatcherMixin
-from .listener_record import EventCallback
-from .listener_spec import ListenerSpec
 from .listener_state import ListenerState
 from .priority import DEFAULT_PRIORITY, EventPriority
 
