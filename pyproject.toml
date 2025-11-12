@@ -9,7 +9,7 @@ authors = [{name = "weeger", email = "contact@wexample.com"}]
 requires-python = ">=3.10"
 classifiers = ["Programming Language :: Python :: 3", "License :: OSI Approved :: MIT License", "Operating System :: OS Independent"]
 dependencies = [
-    "wexample-helpers==0.0.81",
+    "wexample-helpers==0.0.83",
 ]
 
 [project.readme]
