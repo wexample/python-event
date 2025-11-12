@@ -1,12 +1,13 @@
 from __future__ import annotations
 
-from typing import Any, Callable, Iterable, Sequence
+from collections.abc import Callable, Iterable, Sequence
+from typing import Any
 
-from wexample_event.dataclass.listener_record import EventCallback
-from wexample_event.dataclass.listener_spec import ListenerSpec
 from wexample_event.common.dispatcher import EventDispatcherMixin
 from wexample_event.common.listener_state import ListenerState
 from wexample_event.common.priority import DEFAULT_PRIORITY, EventPriority
+from wexample_event.dataclass.listener_record import EventCallback
+from wexample_event.dataclass.listener_spec import ListenerSpec
 
 
 class EventListenerMixin:
@@ -64,6 +65,11 @@ class EventListenerMixin:
         state.dispatcher = dispatcher
         state.bindings = bindings
 
+    def get_bound_dispatcher(self) -> EventDispatcherMixin | None:
+        """Return the dispatcher this listener is currently bound to."""
+        state = self._ensure_listener_state()
+        return state.dispatcher
+
     def unbind_from_dispatcher(self) -> None:
         """Remove all listeners previously bound via bind_to_dispatcher."""
         state = self._ensure_listener_state()
@@ -77,10 +83,12 @@ class EventListenerMixin:
         state.dispatcher = None
         state.bindings = []
 
-    def get_bound_dispatcher(self) -> EventDispatcherMixin | None:
-        """Return the dispatcher this listener is currently bound to."""
-        state = self._ensure_listener_state()
-        return state.dispatcher
+    def _ensure_listener_state(self) -> ListenerState:
+        state = getattr(self, self._BOUND_STATE_ATTR, None)
+        if state is None:
+            state = ListenerState()
+            setattr(self, self._BOUND_STATE_ATTR, state)
+        return state
 
     def _iter_declared_listener_specs(
         self,
@@ -90,10 +98,3 @@ class EventListenerMixin:
                 specs = getattr(value, self._LISTENER_MARK_ATTR, None)
                 if specs:
                     yield attr_name, specs
-
-    def _ensure_listener_state(self) -> ListenerState:
-        state = getattr(self, self._BOUND_STATE_ATTR, None)
-        if state is None:
-            state = ListenerState()
-            setattr(self, self._BOUND_STATE_ATTR, state)
-        return state

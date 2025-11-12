@@ -4,11 +4,11 @@ import inspect
 import threading
 from collections.abc import Mapping
 from itertools import count
-from typing import Any, ClassVar, List, Tuple
+from typing import Any, ClassVar
 
+from wexample_event.common.priority import DEFAULT_PRIORITY, EventPriority
 from wexample_event.dataclass.event import Event
 from wexample_event.dataclass.listener_record import EventCallback, ListenerRecord
-from wexample_event.common.priority import DEFAULT_PRIORITY, EventPriority
 
 
 class EventDispatcherMixin:
@@ -45,29 +45,6 @@ class EventDispatcherMixin:
             bucket.append(record)
             bucket.sort(key=lambda item: (-item.priority, item.order))
 
-    def remove_event_listener(
-        self,
-        name: str,
-        callback: EventCallback,
-    ) -> bool:
-        """Remove a previously registered callback. Returns True if removed."""
-        listeners, lock, _ = self._ensure_dispatcher_state()
-
-        with lock:
-            bucket = listeners.get(name)
-            if not bucket:
-                return False
-
-            initial_length = len(bucket)
-            bucket[:] = [
-                record
-                for record in bucket
-                if not (record.callback is callback or record.callback == callback)
-            ]
-            if not bucket:
-                listeners.pop(name, None)
-            return len(bucket) != initial_length
-
     def clear_event_listeners(self, name: str | None = None) -> None:
         """Remove all listeners. When name is provided, only that event is cleared."""
         listeners, lock, _ = self._ensure_dispatcher_state()
@@ -77,11 +54,6 @@ class EventDispatcherMixin:
                 listeners.clear()
             else:
                 listeners.pop(name, None)
-
-    def has_event_listeners(self, name: str) -> bool:
-        listeners, lock, _ = self._ensure_dispatcher_state()
-        with lock:
-            return bool(listeners.get(name))
 
     def dispatch(
         self,
@@ -97,7 +69,7 @@ class EventDispatcherMixin:
         )
         dispatched_event, records = listeners
 
-        callbacks_to_remove: List[Tuple[str, EventCallback]] = []
+        callbacks_to_remove: list[tuple[str, EventCallback]] = []
         for name, record in records:
             result = record.callback(dispatched_event)
             if inspect.isawaitable(result):
@@ -132,7 +104,7 @@ class EventDispatcherMixin:
         )
         dispatched_event, records = listeners
 
-        callbacks_to_remove: List[Tuple[str, EventCallback]] = []
+        callbacks_to_remove: list[tuple[str, EventCallback]] = []
         for name, record in records:
             result = record.callback(dispatched_event)
             if inspect.isawaitable(result):
@@ -175,23 +147,33 @@ class EventDispatcherMixin:
             event, payload=payload, metadata=metadata, source=source
         )
 
-    def _snapshot_listeners(
-        self,
-        event: Event | str,
-        *,
-        payload: Mapping[str, Any] | None,
-        metadata: Mapping[str, Any] | None,
-        source: Any | object,
-    ) -> tuple[Event, list[tuple[str, ListenerRecord]]]:
+    def has_event_listeners(self, name: str) -> bool:
         listeners, lock, _ = self._ensure_dispatcher_state()
-        dispatched_event = self._coerce_event(
-            event, payload=payload, metadata=metadata, source=source
-        )
+        with lock:
+            return bool(listeners.get(name))
+
+    def remove_event_listener(
+        self,
+        name: str,
+        callback: EventCallback,
+    ) -> bool:
+        """Remove a previously registered callback. Returns True if removed."""
+        listeners, lock, _ = self._ensure_dispatcher_state()
 
         with lock:
-            bucket = listeners.get(dispatched_event.name, [])
-            copied = [(dispatched_event.name, record) for record in list(bucket)]
-        return dispatched_event, copied
+            bucket = listeners.get(name)
+            if not bucket:
+                return False
+
+            initial_length = len(bucket)
+            bucket[:] = [
+                record
+                for record in bucket
+                if not (record.callback is callback or record.callback == callback)
+            ]
+            if not bucket:
+                listeners.pop(name, None)
+            return len(bucket) != initial_length
 
     def _coerce_event(
         self,
@@ -226,7 +208,7 @@ class EventDispatcherMixin:
             getattr(self, self._ORDER_ATTR),
         )
 
-    def _get_bubbling_parent(self) -> "EventDispatcherMixin | None":
+    def _get_bubbling_parent(self) -> EventDispatcherMixin | None:
         """Override this method to return the parent dispatcher for event bubbling.
 
         Returns:
@@ -240,3 +222,21 @@ class EventDispatcherMixin:
                     return self.parent  # or self.owner, self.container, etc.
         """
         return None
+
+    def _snapshot_listeners(
+        self,
+        event: Event | str,
+        *,
+        payload: Mapping[str, Any] | None,
+        metadata: Mapping[str, Any] | None,
+        source: Any | object,
+    ) -> tuple[Event, list[tuple[str, ListenerRecord]]]:
+        listeners, lock, _ = self._ensure_dispatcher_state()
+        dispatched_event = self._coerce_event(
+            event, payload=payload, metadata=metadata, source=source
+        )
+
+        with lock:
+            bucket = listeners.get(dispatched_event.name, [])
+            copied = [(dispatched_event.name, record) for record in list(bucket)]
+        return dispatched_event, copied

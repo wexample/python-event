@@ -4,7 +4,6 @@ from wexample_helpers.testing.abstract_test_helpers import AbstractTestHelpers
 
 
 class TestEventPriority(AbstractTestHelpers):
-
     def test_default_priority(self) -> None:
         """Test DEFAULT_PRIORITY constant."""
         from wexample_event.common.priority import DEFAULT_PRIORITY, EventPriority
@@ -64,6 +63,7 @@ class TestEventPriority(AbstractTestHelpers):
             EventPriority.NORMAL,
             EventPriority.HIGH,
         ]
+
     def test_priority_values(self) -> None:
         """Test EventPriority enum values."""
         from wexample_event.common.priority import EventPriority

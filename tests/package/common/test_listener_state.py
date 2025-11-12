@@ -4,11 +4,10 @@ from wexample_helpers.testing.abstract_test_helpers import AbstractTestHelpers
 
 
 class TestListenerState(AbstractTestHelpers):
-
     def test_listener_state_add_bindings(self) -> None:
         """Test adding bindings to ListenerState."""
-        from wexample_event.dataclass.event import Event
         from wexample_event.common.listener_state import ListenerState
+        from wexample_event.dataclass.event import Event
 
         def callback(event: Event) -> None:
             pass
@@ -22,8 +21,8 @@ class TestListenerState(AbstractTestHelpers):
 
     def test_listener_state_clear_bindings(self) -> None:
         """Test clearing bindings from ListenerState."""
-        from wexample_event.dataclass.event import Event
         from wexample_event.common.listener_state import ListenerState
+        from wexample_event.dataclass.event import Event
 
         def callback(event: Event) -> None:
             pass
@@ -34,6 +33,7 @@ class TestListenerState(AbstractTestHelpers):
 
         state.bindings = []
         assert len(state.bindings) == 0
+
     def test_listener_state_creation(self) -> None:
         """Test creating a ListenerState."""
         from wexample_event.common.listener_state import ListenerState
@@ -45,8 +45,8 @@ class TestListenerState(AbstractTestHelpers):
 
     def test_listener_state_mutable(self) -> None:
         """Test that ListenerState is mutable."""
-        from wexample_event.common.listener_state import ListenerState
         from wexample_event.common.dispatcher import EventDispatcherMixin
+        from wexample_event.common.listener_state import ListenerState
 
         class TestDispatcher(EventDispatcherMixin):
             pass
@@ -63,8 +63,8 @@ class TestListenerState(AbstractTestHelpers):
 
     def test_listener_state_set_dispatcher(self) -> None:
         """Test setting dispatcher on ListenerState."""
-        from wexample_event.common.listener_state import ListenerState
         from wexample_event.common.dispatcher import EventDispatcherMixin
+        from wexample_event.common.listener_state import ListenerState
 
         class TestDispatcher(EventDispatcherMixin):
             pass

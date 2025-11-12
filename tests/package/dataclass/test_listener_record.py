@@ -4,7 +4,6 @@ from wexample_helpers.testing.abstract_test_helpers import AbstractTestHelpers
 
 
 class TestListenerRecord(AbstractTestHelpers):
-
     def test_listener_record_async_callback(self) -> None:
         """Test ListenerRecord with async callback."""
         from wexample_event.dataclass.event import Event
@@ -18,6 +17,7 @@ class TestListenerRecord(AbstractTestHelpers):
         )
 
         assert record.callback is async_callback
+
     def test_listener_record_creation(self) -> None:
         """Test creating a ListenerRecord."""
         from wexample_event.dataclass.event import Event

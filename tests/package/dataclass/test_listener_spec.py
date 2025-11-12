@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import pytest
-
 from wexample_helpers.testing.abstract_test_helpers import AbstractTestHelpers
 
 
