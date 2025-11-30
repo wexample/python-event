@@ -585,7 +585,7 @@ Free to use in both personal and commercial projects.
 - **Documentation**: [docs.wexample.com](https://docs.wexample.com)
 - **Issue Tracker**: https://github.com/wexample/python-event/issues
 - **Discussions**: https://github.com/wexample/python-event/discussions
-- **PyPI**: [pypi.org/project/wexample-app](https://pypi.org/project/wexample-app/)
+- **PyPI**: [pypi.org/project/wexample-event](https://pypi.org/project/wexample-event/)
 
 ## Integration in the Suite
 
