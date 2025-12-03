@@ -1,6 +1,6 @@
 # wexample-event
 
-Version: 0.0.78
+Version: 0.0.79
 
 ## Table of Contents
 
@@ -638,7 +638,7 @@ Refer to each package's documentation for specific version compatibility require
 
 ## Dependencies
 
-- wexample-helpers: ==0.0.87
+- wexample-helpers: ==0.0.88
 
 
 # About us
