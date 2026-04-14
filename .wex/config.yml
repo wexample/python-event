@@ -1,6 +1,6 @@
 global:
   name: event
-  version: 0.0.80
+  version: 0.0.81
 test:
   coverage:
     last_report:

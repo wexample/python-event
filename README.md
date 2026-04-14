@@ -1,131 +1,121 @@
-# wexample-event
+# event
 
-Version: 0.0.80
+Version: 0.0.81
 
 ## Table of Contents
 
-- [Status Compatibility](#status-compatibility)
-- [Quickstart](#quickstart)
+- [Tests](#tests)
+- [Suite Integration](#suite-integration)
+- [Dependencies](#dependencies)
+- [Versioning](#versioning)
+- [License](#license)
+- [Suite Integration](#suite-integration)
+- [Suite Signature](#suite-signature)
 - [Api Reference](#api-reference)
 - [Examples](#examples)
-- [Tests](#tests)
+- [Introduction](#introduction)
+- [Quickstart](#quickstart)
 - [Roadmap](#roadmap)
+- [Status Compatibility](#status-compatibility)
 - [Useful Links](#useful-links)
+- [Migration Notes](#migration-notes)
 
+## Tests
 
-## Status & Compatibility
+This project uses `pytest` for testing and `pytest-cov` for code coverage analysis.
 
-**Maturity**: Production-ready
+### Installation
 
-**Python Support**: >=3.10
-
-**OS Support**: Linux, macOS, Windows
-
-**Status**: Actively maintained
-
-# Quickstart
-
-## Basic Event Dispatching
-
-```python
-from wexample_event.dataclass.event import Event
-from wexample_event.common.dispatcher import EventDispatcherMixin
-
-# Create a dispatcher
-class MyApp(EventDispatcherMixin):
-    pass
-
-app = MyApp()
-
-# Add a listener
-def on_user_login(event: Event) -> None:
-    print(f"User logged in: {event.payload['username']}")
-
-app.add_event_listener("user.login", on_user_login)
-
-# Dispatch an event
-app.dispatch("user.login", payload={"username": "john"})
+First, install the required testing dependencies:
+```bash
+.venv/bin/python -m pip install pytest pytest-cov
 ```
 
-## Using the Listener Mixin
+### Basic Usage
 
-```python
-from wexample_event.dataclass.event import Event
-from wexample_event.common.listener import EventListenerMixin
-from wexample_event.common.dispatcher import EventDispatcherMixin
-
-class MyDispatcher(EventDispatcherMixin):
-    pass
-
-class MyListener(EventListenerMixin):
-    @EventListenerMixin.on("user.login")
-    def handle_login(self, event: Event) -> None:
-        print(f"Login handled: {event.payload['username']}")
-    
-    @EventListenerMixin.on("user.logout")
-    def handle_logout(self, event: Event) -> None:
-        print("User logged out")
-
-# Setup
-dispatcher = MyDispatcher()
-listener = MyListener()
-listener.bind_to_dispatcher(dispatcher)
-
-# Dispatch events
-dispatcher.dispatch("user.login", payload={"username": "jane"})
-dispatcher.dispatch("user.logout")
+Run all tests with coverage:
+```bash
+.venv/bin/python -m pytest --cov --cov-report=html
 ```
 
-## Async Events
+### Common Commands
+```bash
+# Run tests with coverage for a specific module
+.venv/bin/python -m pytest --cov=your_module
 
-```python
-import asyncio
-from wexample_event.dataclass.event import Event
-from wexample_event.common.dispatcher import EventDispatcherMixin
+# Show which lines are not covered
+.venv/bin/python -m pytest --cov=your_module --cov-report=term-missing
 
-class AsyncApp(EventDispatcherMixin):
-    pass
+# Generate an HTML coverage report
+.venv/bin/python -m pytest --cov=your_module --cov-report=html
 
-app = AsyncApp()
+# Combine terminal and HTML reports
+.venv/bin/python -m pytest --cov=your_module --cov-report=term-missing --cov-report=html
 
-async def async_handler(event: Event) -> None:
-    await asyncio.sleep(0.1)
-    print(f"Async handler: {event.name}")
-
-app.add_event_listener("async.event", async_handler)
-
-# Use dispatch_async for async handlers
-await app.dispatch_async("async.event")
+# Run specific test file with coverage
+.venv/bin/python -m pytest tests/test_file.py --cov=your_module --cov-report=term-missing
 ```
 
-## Priority and Once
+### Viewing HTML Reports
 
-```python
-from wexample_event.dataclass.event import Event
-from wexample_event.common.priority import EventPriority
-from wexample_event.common.dispatcher import EventDispatcherMixin
+After generating an HTML report, open `htmlcov/index.html` in your browser to view detailed line-by-line coverage information.
 
-app = EventDispatcherMixin()
+### Coverage Threshold
 
-# High priority listener (runs first)
-def high_priority(event: Event) -> None:
-    print("High priority")
-
-# Low priority listener (runs last)
-def low_priority(event: Event) -> None:
-    print("Low priority")
-
-# One-time listener
-def once_handler(event: Event) -> None:
-    print("This runs only once")
-
-app.add_event_listener("test", high_priority, priority=EventPriority.HIGH)
-app.add_event_listener("test", low_priority, priority=EventPriority.LOW)
-app.add_event_listener("test", once_handler, once=True)
-
-app.dispatch("test")  # All three run
-app.dispatch("test")  # Only high and low priority run
+To enforce a minimum coverage percentage:
+```bash
+.venv/bin/python -m pytest --cov=your_module --cov-fail-under=80
 ```
+
+This will cause the test suite to fail if coverage drops below 80%.
+
+## Integration in the Suite
+
+This package is part of the Wexample Suite — a collection of high-quality, modular tools designed to work seamlessly together across multiple languages and environments.
+
+### Related Packages
+
+The suite includes packages for configuration management, file handling, prompts, and more. Each package can be used independently or as part of the integrated suite.
+
+Visit the [Wexample Suite documentation](https://docs.wexample.com) for the complete package ecosystem.
+
+## Dependencies
+
+- wexample-helpers: >=0.7.0
+
+## Versioning & Compatibility Policy
+
+Wexample packages follow **Semantic Versioning** (SemVer):
+
+- **MAJOR**: Breaking changes
+- **MINOR**: New features, backward compatible
+- **PATCH**: Bug fixes, backward compatible
+
+We maintain backward compatibility within major versions and provide clear migration guides for breaking changes.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+Free to use in both personal and commercial projects.
+
+## Integration in the Suite
+
+This package is part of the Wexample Suite — a collection of high-quality, modular tools designed to work seamlessly together across multiple languages and environments.
+
+### Related Packages
+
+The suite includes packages for configuration management, file handling, prompts, and more. Each package can be used independently or as part of the integrated suite.
+
+Visit the [Wexample Suite documentation](https://docs.wexample.com) for the complete package ecosystem.
+
+# About us
+
+[Wexample](https://wexample.com) stands as a cornerstone of the digital ecosystem — a collective of seasoned engineers, researchers, and creators driven by a relentless pursuit of technological excellence. More than a media platform, it has grown into a vibrant community where innovation meets craftsmanship, and where every line of code reflects a commitment to clarity, durability, and shared intelligence.
+
+This packages suite embodies this spirit. Trusted by professionals and enthusiasts alike, it delivers a consistent, high-quality foundation for modern development — open, elegant, and battle-tested. Its reputation is built on years of collaboration, refinement, and rigorous attention to detail, making it a natural choice for those who demand both robustness and beauty in their tools.
+
+Wexample cultivates a culture of mastery. Each package, each contribution carries the mark of a community that values precision, ethics, and innovation — a community proud to shape the future of digital craftsmanship.
 
 # API Reference
 
@@ -461,54 +451,131 @@ bus.emit("user.login", username="alice")
 bus.emit("user.logout", username="alice")
 ```
 
-## Tests
+# Introduction
 
-This project uses `pytest` for testing and `pytest-cov` for code coverage analysis.
+`wexample-event` is a lightweight, thread-safe event dispatcher library for Python that implements the observer pattern. It provides a simple yet powerful way to decouple components in your application through event-driven communication.
 
-### Installation
+## Key Features
 
-First, install the required testing dependencies:
-```bash
-.venv/bin/python -m pip install pytest pytest-cov
+- **Simple API** - Easy-to-use mixins for dispatching and listening to events
+- **Type-safe** - Full type hints support for better IDE integration
+- **Async Support** - Works with both synchronous and asynchronous event handlers
+- **Priority System** - Control the execution order of event listeners
+- **Thread-safe** - Built-in thread safety for concurrent applications
+- **Decorator-based** - Clean syntax using Python decorators for event listeners
+- **Zero Dependencies** - Only depends on `wexample-helpers`
+
+## Use Cases
+
+- **Application Events** - Coordinate actions across different parts of your application
+- **Plugin Systems** - Allow plugins to react to application events
+- **State Management** - Notify components when state changes occur
+- **Logging & Monitoring** - Track application behavior through events
+- **Decoupling** - Reduce tight coupling between components
+
+# Quickstart
+
+## Basic Event Dispatching
+
+```python
+from wexample_event.dataclass.event import Event
+from wexample_event.common.dispatcher import EventDispatcherMixin
+
+# Create a dispatcher
+class MyApp(EventDispatcherMixin):
+    pass
+
+app = MyApp()
+
+# Add a listener
+def on_user_login(event: Event) -> None:
+    print(f"User logged in: {event.payload['username']}")
+
+app.add_event_listener("user.login", on_user_login)
+
+# Dispatch an event
+app.dispatch("user.login", payload={"username": "john"})
 ```
 
-### Basic Usage
+## Using the Listener Mixin
 
-Run all tests with coverage:
-```bash
-.venv/bin/python -m pytest --cov --cov-report=html
+```python
+from wexample_event.dataclass.event import Event
+from wexample_event.common.listener import EventListenerMixin
+from wexample_event.common.dispatcher import EventDispatcherMixin
+
+class MyDispatcher(EventDispatcherMixin):
+    pass
+
+class MyListener(EventListenerMixin):
+    @EventListenerMixin.on("user.login")
+    def handle_login(self, event: Event) -> None:
+        print(f"Login handled: {event.payload['username']}")
+    
+    @EventListenerMixin.on("user.logout")
+    def handle_logout(self, event: Event) -> None:
+        print("User logged out")
+
+# Setup
+dispatcher = MyDispatcher()
+listener = MyListener()
+listener.bind_to_dispatcher(dispatcher)
+
+# Dispatch events
+dispatcher.dispatch("user.login", payload={"username": "jane"})
+dispatcher.dispatch("user.logout")
 ```
 
-### Common Commands
-```bash
-# Run tests with coverage for a specific module
-.venv/bin/python -m pytest --cov=your_module
+## Async Events
 
-# Show which lines are not covered
-.venv/bin/python -m pytest --cov=your_module --cov-report=term-missing
+```python
+import asyncio
+from wexample_event.dataclass.event import Event
+from wexample_event.common.dispatcher import EventDispatcherMixin
 
-# Generate an HTML coverage report
-.venv/bin/python -m pytest --cov=your_module --cov-report=html
+class AsyncApp(EventDispatcherMixin):
+    pass
 
-# Combine terminal and HTML reports
-.venv/bin/python -m pytest --cov=your_module --cov-report=term-missing --cov-report=html
+app = AsyncApp()
 
-# Run specific test file with coverage
-.venv/bin/python -m pytest tests/test_file.py --cov=your_module --cov-report=term-missing
+async def async_handler(event: Event) -> None:
+    await asyncio.sleep(0.1)
+    print(f"Async handler: {event.name}")
+
+app.add_event_listener("async.event", async_handler)
+
+# Use dispatch_async for async handlers
+await app.dispatch_async("async.event")
 ```
 
-### Viewing HTML Reports
+## Priority and Once
 
-After generating an HTML report, open `htmlcov/index.html` in your browser to view detailed line-by-line coverage information.
+```python
+from wexample_event.dataclass.event import Event
+from wexample_event.common.priority import EventPriority
+from wexample_event.common.dispatcher import EventDispatcherMixin
 
-### Coverage Threshold
+app = EventDispatcherMixin()
 
-To enforce a minimum coverage percentage:
-```bash
-.venv/bin/python -m pytest --cov=your_module --cov-fail-under=80
+# High priority listener (runs first)
+def high_priority(event: Event) -> None:
+    print("High priority")
+
+# Low priority listener (runs last)
+def low_priority(event: Event) -> None:
+    print("Low priority")
+
+# One-time listener
+def once_handler(event: Event) -> None:
+    print("This runs only once")
+
+app.add_event_listener("test", high_priority, priority=EventPriority.HIGH)
+app.add_event_listener("test", low_priority, priority=EventPriority.LOW)
+app.add_event_listener("test", once_handler, once=True)
+
+app.dispatch("test")  # All three run
+app.dispatch("test")  # Only high and low priority run
 ```
-
-This will cause the test suite to fail if coverage drops below 80%.
 
 ## Known Limitations & Roadmap
 
@@ -516,11 +583,26 @@ Current limitations and planned features are tracked in the GitHub issues.
 
 See the [project roadmap](https://github.com/wexample/python-event/issues) for upcoming features and improvements.
 
+## Status & Compatibility
+
+**Maturity**: Production-ready
+
+**Python Support**: >=3.10
+
+**OS Support**: Linux, macOS, Windows
+
+**Status**: Actively maintained
+
 ## Useful Links
 
 - **Homepage**: https://github.com/wexample/python-event
 - **Documentation**: [docs.wexample.com](https://docs.wexample.com)
 - **Issue Tracker**: https://github.com/wexample/python-event/issues
 - **Discussions**: https://github.com/wexample/python-event/discussions
-- **PyPI**: [pypi.org/project/wexample-event](https://pypi.org/project/wexample-event/)
+- **PyPI**: [pypi.org/project/event](https://pypi.org/project/event/)
 
+## Migration Notes
+
+When upgrading between major versions, refer to the migration guides in the documentation.
+
+Breaking changes are clearly documented with upgrade paths and examples.
