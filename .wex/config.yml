@@ -4,7 +4,7 @@ domains: []
 global:
   name: event
   type: app
-  version: 6.0.29
+  version: 6.0.30
 test:
   coverage:
     last_report:
