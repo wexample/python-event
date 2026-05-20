@@ -4,7 +4,7 @@ domains: []
 global:
   name: event
   type: app
-  version: 6.0.28
+  version: 6.0.31
 test:
   coverage:
     last_report:
@@ -13,3 +13,5 @@ test:
       missing: 1
       percent: 99.50738916256158
       total: 203
+wex:
+  version: 6.0.28
