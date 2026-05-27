@@ -71,8 +71,14 @@ class EventDispatcherMixin:
 
         callbacks_to_remove: list[tuple[str, EventCallback]] = []
         for name, record in records:
+            if inspect.iscoroutinefunction(record.callback):
+                raise RuntimeError(
+                    "Listener is async; use dispatch_async for async listeners"
+                )
             result = record.callback(dispatched_event)
             if inspect.isawaitable(result):
+                if hasattr(result, "close"):
+                    result.close()
                 raise RuntimeError(
                     "Listener returned an awaitable; use dispatch_async for async listeners"
                 )
