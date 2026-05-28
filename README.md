@@ -1,6 +1,6 @@
 # event
 
-Version: 6.0.34
+Version: 6.1.0
 
 ## Table of Contents
 
