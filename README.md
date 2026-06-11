@@ -1,6 +1,6 @@
 # event
 
-Version: 6.1.0
+Version: 6.1.1
 
 ## Table of Contents
 
@@ -81,7 +81,7 @@ Visit the [Wexample Suite documentation](https://docs.wexample.com) for the comp
 
 ## Dependencies
 
-- wexample-helpers: >=13.1.0
+- wexample-helpers: >=15.0.0
 
 ## Versioning & Compatibility Policy
 
