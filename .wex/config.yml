@@ -4,10 +4,11 @@ domains: []
 global:
   name: event
   type: app
-  version: 6.1.5
+  version: 6.1.6
 test:
   coverage:
     last_report:
+      commit_hash: e8cf0bb436c0839a8cd8d5f395b990d5d68a11e6
       covered: 215
       excluded: 2
       missing: 5
