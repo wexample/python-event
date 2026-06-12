@@ -60,9 +60,7 @@ htmlcov/
 .pdm-python
 .python-version
 .venv
-/coverage.json
 .pdm-python
 .python-version
 .venv
-/coverage.json
 /.pdm-build/
