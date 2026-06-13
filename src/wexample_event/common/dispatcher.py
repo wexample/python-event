@@ -70,13 +70,15 @@ class EventDispatcherMixin:
         dispatched_event, records = listeners
 
         callbacks_to_remove: list[tuple[str, EventCallback]] = []
+        _iscoroutinefunction = inspect.iscoroutinefunction
+        _isawaitable = inspect.isawaitable
         for name, record in records:
-            if inspect.iscoroutinefunction(record.callback):
+            if _iscoroutinefunction(record.callback):
                 raise RuntimeError(
                     "Listener is async; use dispatch_async for async listeners"
                 )
             result = record.callback(dispatched_event)
-            if inspect.isawaitable(result):
+            if _isawaitable(result):
                 if hasattr(result, "close"):
                     result.close()
                 raise RuntimeError(
@@ -111,9 +113,10 @@ class EventDispatcherMixin:
         dispatched_event, records = listeners
 
         callbacks_to_remove: list[tuple[str, EventCallback]] = []
+        _isawaitable = inspect.isawaitable
         for name, record in records:
             result = record.callback(dispatched_event)
-            if inspect.isawaitable(result):
+            if _isawaitable(result):
                 await result
             if record.once:
                 callbacks_to_remove.append((name, record.callback))
@@ -243,6 +246,7 @@ class EventDispatcherMixin:
         )
 
         with lock:
-            bucket = listeners.get(dispatched_event.name, [])
-            copied = [(dispatched_event.name, record) for record in list(bucket)]
+            name = dispatched_event.name
+            bucket = listeners.get(name, [])
+            copied = [(name, record) for record in bucket]
         return dispatched_event, copied

@@ -93,8 +93,9 @@ class EventListenerMixin:
     def _iter_declared_listener_specs(
         self,
     ) -> Iterable[tuple[str, Sequence[ListenerSpec]]]:
+        mark_attr = self._LISTENER_MARK_ATTR
         for cls in type(self).__mro__:
             for attr_name, value in cls.__dict__.items():
-                specs = getattr(value, self._LISTENER_MARK_ATTR, None)
+                specs = getattr(value, mark_attr, None)
                 if specs:
                     yield attr_name, specs
