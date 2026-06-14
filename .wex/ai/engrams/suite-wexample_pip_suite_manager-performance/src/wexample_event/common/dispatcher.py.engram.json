@@ -1,0 +1,11 @@
+{
+  "engram_version": 1,
+  "source_key": "src/wexample_event/common/dispatcher.py",
+  "cache_nonce": "1c2800147ebc4367950bb7b61bd21d00",
+  "last_visited_at": "2026-06-14T19:32:51+00:00",
+  "last_rev": "c14b539a5d06e3c1fa371f1f401293cac256f0b2",
+  "last_decision": "edit",
+  "kinds": [],
+  "notes": "hoisted inspect lookups and sort-key lambda to module level; _ensure_dispatcher_state uses __dict__ for O(1) access; has_event_listeners short-circuits; remove_event_listener caches post-mutation len; inlined redundant tuple unpacking in dispatch paths",
+  "in_progress": null
+}

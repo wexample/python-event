@@ -10,6 +10,15 @@ from wexample_event.common.priority import DEFAULT_PRIORITY, EventPriority
 from wexample_event.dataclass.event import Event
 from wexample_event.dataclass.listener_record import EventCallback, ListenerRecord
 
+# Hoisted at module level to avoid per-call attribute lookups on the inspect module.
+_iscoroutinefunction = inspect.iscoroutinefunction
+_isawaitable = inspect.isawaitable
+
+
+def _listener_sort_key(item: ListenerRecord) -> tuple[int, int]:
+    """Sort key for listener buckets: highest priority first, FIFO within priority."""
+    return (-item.priority, item.order)
+
 
 class EventDispatcherMixin:
     """Mixin providing a lightweight observer pattern implementation."""
@@ -43,7 +52,7 @@ class EventDispatcherMixin:
         with lock:
             bucket = listeners.setdefault(name, [])
             bucket.append(record)
-            bucket.sort(key=lambda item: (-item.priority, item.order))
+            bucket.sort(key=_listener_sort_key)
 
     def clear_event_listeners(self, name: str | None = None) -> None:
         """Remove all listeners. When name is provided, only that event is cleared."""
@@ -64,14 +73,11 @@ class EventDispatcherMixin:
         source: Any | object = _UNSET,
     ) -> Event:
         """Synchronously dispatch an event to all registered listeners."""
-        listeners = self._snapshot_listeners(
+        dispatched_event, records = self._snapshot_listeners(
             event, payload=payload, metadata=metadata, source=source
         )
-        dispatched_event, records = listeners
 
         callbacks_to_remove: list[tuple[str, EventCallback]] = []
-        _iscoroutinefunction = inspect.iscoroutinefunction
-        _isawaitable = inspect.isawaitable
         for name, record in records:
             if _iscoroutinefunction(record.callback):
                 raise RuntimeError(
@@ -107,13 +113,11 @@ class EventDispatcherMixin:
         source: Any | object = _UNSET,
     ) -> Event:
         """Asynchronously dispatch an event, awaiting coroutine listeners."""
-        listeners = self._snapshot_listeners(
+        dispatched_event, records = self._snapshot_listeners(
             event, payload=payload, metadata=metadata, source=source
         )
-        dispatched_event, records = listeners
 
         callbacks_to_remove: list[tuple[str, EventCallback]] = []
-        _isawaitable = inspect.isawaitable
         for name, record in records:
             result = record.callback(dispatched_event)
             if _isawaitable(result):
@@ -157,8 +161,12 @@ class EventDispatcherMixin:
         )
 
     def has_event_listeners(self, name: str) -> bool:
-        listeners, lock, _ = self._ensure_dispatcher_state()
-        with lock:
+        # Short-circuit without initializing state if nothing has been registered yet.
+        d = self.__dict__
+        listeners = d.get(self._LISTENERS_ATTR)
+        if not listeners:
+            return False
+        with d[self._LOCK_ATTR]:
             return bool(listeners.get(name))
 
     def remove_event_listener(
@@ -180,9 +188,10 @@ class EventDispatcherMixin:
                 for record in bucket
                 if not (record.callback is callback or record.callback == callback)
             ]
-            if not bucket:
+            new_length = len(bucket)
+            if not new_length:
                 listeners.pop(name, None)
-            return len(bucket) != initial_length
+            return new_length != initial_length
 
     def _coerce_event(
         self,
@@ -207,15 +216,14 @@ class EventDispatcherMixin:
     def _ensure_dispatcher_state(
         self,
     ) -> tuple[dict[str, list[ListenerRecord]], threading.RLock, count]:
-        if not hasattr(self, self._LISTENERS_ATTR):
-            setattr(self, self._LISTENERS_ATTR, {})
-            setattr(self, self._LOCK_ATTR, threading.RLock())
-            setattr(self, self._ORDER_ATTR, count())
-        return (
-            getattr(self, self._LISTENERS_ATTR),
-            getattr(self, self._LOCK_ATTR),
-            getattr(self, self._ORDER_ATTR),
-        )
+        # Use __dict__ directly for O(1) instance-dict access without MRO traversal.
+        d = self.__dict__
+        listeners_attr = self._LISTENERS_ATTR
+        if listeners_attr not in d:
+            d[listeners_attr] = {}
+            d[self._LOCK_ATTR] = threading.RLock()
+            d[self._ORDER_ATTR] = count()
+        return d[listeners_attr], d[self._LOCK_ATTR], d[self._ORDER_ATTR]
 
     def _get_bubbling_parent(self) -> EventDispatcherMixin | None:
         """Override this method to return the parent dispatcher for event bubbling.
