@@ -27,11 +27,9 @@ class EventListenerMixin:
         """Decorator to declare a method as an event listener."""
 
         def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
-            specs = list(getattr(func, cls._LISTENER_MARK_ATTR, ()))
-            specs.append(
-                ListenerSpec(name=event_name, priority=int(priority), once=once)
-            )
-            setattr(func, cls._LISTENER_MARK_ATTR, tuple(specs))
+            mark_attr = cls._LISTENER_MARK_ATTR
+            new_spec = ListenerSpec(name=event_name, priority=int(priority), once=once)
+            setattr(func, mark_attr, getattr(func, mark_attr, ()) + (new_spec,))
             return func
 
         return decorator
@@ -48,7 +46,6 @@ class EventListenerMixin:
 
         if state.dispatcher is not None:
             self.unbind_from_dispatcher()
-            state = self._ensure_listener_state()
 
         bindings: list[tuple[str, EventCallback]] = []
         for method_name, specs in self._iter_declared_listener_specs():
@@ -67,12 +64,14 @@ class EventListenerMixin:
 
     def get_bound_dispatcher(self) -> EventDispatcherMixin | None:
         """Return the dispatcher this listener is currently bound to."""
-        state = self._ensure_listener_state()
-        return state.dispatcher
+        state = getattr(self, self._BOUND_STATE_ATTR, None)
+        return state.dispatcher if state is not None else None
 
     def unbind_from_dispatcher(self) -> None:
         """Remove all listeners previously bound via bind_to_dispatcher."""
-        state = self._ensure_listener_state()
+        state = getattr(self, self._BOUND_STATE_ATTR, None)
+        if state is None:
+            return
         dispatcher = state.dispatcher
         if dispatcher is None:
             return
@@ -84,10 +83,11 @@ class EventListenerMixin:
         state.bindings = []
 
     def _ensure_listener_state(self) -> ListenerState:
-        state = getattr(self, self._BOUND_STATE_ATTR, None)
+        attr = self._BOUND_STATE_ATTR
+        state = getattr(self, attr, None)
         if state is None:
             state = ListenerState()
-            setattr(self, self._BOUND_STATE_ATTR, state)
+            setattr(self, attr, state)
         return state
 
     def _iter_declared_listener_specs(

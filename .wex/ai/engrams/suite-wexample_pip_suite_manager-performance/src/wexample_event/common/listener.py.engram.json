@@ -1,0 +1,11 @@
+{
+  "engram_version": 1,
+  "source_key": "src/wexample_event/common/listener.py",
+  "cache_nonce": "1c2800147ebc4367950bb7b61bd21d00",
+  "last_visited_at": "2026-06-14T19:34:44+00:00",
+  "last_rev": "687d0b72a1da2f71578cfb89864827c88d0e1983",
+  "last_decision": "edit",
+  "kinds": [],
+  "notes": "eliminated list+append+tuple in `on` decorator, removed redundant `_ensure_listener_state` call in `bind_to_dispatcher`, skipped state allocation in `get_bound_dispatcher`/`unbind_from_dispatcher`, hoisted `_BOUND_STATE_ATTR` to local in `_ensure_listener_state`",
+  "in_progress": null
+}
