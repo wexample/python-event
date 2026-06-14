@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from dataclasses import dataclass, field, replace
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 
@@ -15,7 +15,7 @@ class Event:
     metadata: Mapping[str, Any] | None = None
     payload: Mapping[str, Any] | None = None
     source: Any | None = None
-    timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    timestamp: datetime = field(default_factory=lambda: datetime.now(UTC))
 
     def derive(self, name: str | None = None, **changes: Any) -> Event:
         """Copy the event, optionally overriding the name and additional fields."""

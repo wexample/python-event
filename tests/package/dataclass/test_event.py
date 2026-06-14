@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import pytest
 from wexample_helpers.testing.abstract_test_helpers import AbstractTestHelpers
@@ -23,7 +23,7 @@ class TestEvent(AbstractTestHelpers):
         """Test event with custom timestamp."""
         from wexample_event.dataclass.event import Event
 
-        custom_time = datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
+        custom_time = datetime(2023, 1, 1, 12, 0, 0, tzinfo=UTC)
         event = Event(name="test", timestamp=custom_time)
 
         assert event.timestamp == custom_time
@@ -69,7 +69,7 @@ class TestEvent(AbstractTestHelpers):
         """Test event equality comparison."""
         from wexample_event.dataclass.event import Event
 
-        timestamp = datetime.now(timezone.utc)
+        timestamp = datetime.now(UTC)
         event1 = Event(name="test", payload={"key": "value"}, timestamp=timestamp)
         event2 = Event(name="test", payload={"key": "value"}, timestamp=timestamp)
 
@@ -100,7 +100,7 @@ class TestEvent(AbstractTestHelpers):
 
         event = Event(name="test")
 
-        assert event.timestamp.tzinfo == timezone.utc
+        assert event.timestamp.tzinfo == UTC
 
     def test_event_with_metadata(self) -> None:
         """Test event creation with metadata."""
