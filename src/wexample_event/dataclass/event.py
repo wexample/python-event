@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from dataclasses import dataclass, field, replace
 from datetime import UTC, datetime
+from functools import partial
 from typing import Any
 
 
@@ -15,12 +16,12 @@ class Event:
     metadata: Mapping[str, Any] | None = None
     payload: Mapping[str, Any] | None = None
     source: Any | None = None
-    timestamp: datetime = field(default_factory=lambda: datetime.now(UTC))
+    timestamp: datetime = field(default_factory=partial(datetime.now, UTC))
 
     def derive(self, name: str | None = None, **changes: Any) -> Event:
         """Copy the event, optionally overriding the name and additional fields."""
         if name is not None:
-            changes.setdefault("name", name)
+            changes["name"] = name
         return self.with_update(**changes)
 
     def with_update(self, **changes: Any) -> Event:
