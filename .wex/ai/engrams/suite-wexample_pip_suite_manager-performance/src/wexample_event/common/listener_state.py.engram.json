@@ -1,0 +1,11 @@
+{
+  "engram_version": 1,
+  "source_key": "src/wexample_event/common/listener_state.py",
+  "cache_nonce": "1c2800147ebc4367950bb7b61bd21d00",
+  "last_visited_at": "2026-06-14T19:35:30+00:00",
+  "last_rev": "3e9f1343b7b7ceb2238b1b007d78713622f93f5d",
+  "last_decision": "edit",
+  "kinds": [],
+  "notes": "added __slots__ to ListenerState to eliminate per-instance __dict__ and speed up attribute access",
+  "in_progress": null
+}

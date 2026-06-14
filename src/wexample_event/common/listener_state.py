@@ -7,6 +7,8 @@ if TYPE_CHECKING:
 
 
 class ListenerState:
+    __slots__ = ("bindings", "dispatcher")
+
     bindings: list[tuple[str, EventCallback]]
     dispatcher: EventDispatcherMixin | None  # type: ignore[name-defined]
 
