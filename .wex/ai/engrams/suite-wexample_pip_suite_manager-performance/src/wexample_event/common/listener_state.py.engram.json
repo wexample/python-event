@@ -2,10 +2,10 @@
   "engram_version": 1,
   "source_key": "src/wexample_event/common/listener_state.py",
   "cache_nonce": "1c2800147ebc4367950bb7b61bd21d00",
-  "last_visited_at": "2026-06-16T07:39:02+00:00",
-  "last_rev": "df001f104046500842060d486ebdcf50f27f808b",
-  "last_decision": "edit",
+  "last_visited_at": "2026-06-16T18:45:24+00:00",
+  "last_rev": "10dcbd2201210b53db3d651120cc36c308e58121",
+  "last_decision": "skip",
   "kinds": [],
-  "notes": "reordered __slots__ to put dispatcher first (matches hot-path access order); fixed EventDispatcherMixin annotation via TYPE_CHECKING import",
+  "notes": "__slots__ already applied with correct ordering; __init__ uses [] literal and two simple assignments — nothing to optimize",
   "in_progress": null
 }
