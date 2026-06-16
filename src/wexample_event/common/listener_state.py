@@ -11,8 +11,8 @@ class ListenerState:
     # `dispatcher` is read/written before `bindings` in every hot path; list it
     # first so CPython places it in the earlier slot offset for better cache locality.
     __slots__ = ("dispatcher", "bindings")
-    dispatcher: EventDispatcherMixin | None
     bindings: list[tuple[str, EventCallback]]
+    dispatcher: EventDispatcherMixin | None
 
     def __init__(self) -> None:
         self.dispatcher = None
