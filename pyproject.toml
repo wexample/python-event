@@ -4,12 +4,12 @@ build-backend = "pdm.backend"
 
 [project]
 name = "wexample-event"
-version = "8.0.2"
+version = "8.0.3"
 authors = [{name = "weeger", email = "contact@wexample.com"}]
 requires-python = ">=3.10"
 classifiers = ["Programming Language :: Python :: 3", "License :: OSI Approved :: MIT License", "Operating System :: OS Independent"]
 dependencies = [
-    "wexample-helpers>=18.0.0",
+    "wexample-helpers>=19.0.0",
 ]
 
 [project.readme]
